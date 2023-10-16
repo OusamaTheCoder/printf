@@ -5,7 +5,6 @@
 
 #include <stdarg.h>
 #include <unistd.h>
-#include <string>
 
 int _putchar(char c);
 int _strlen(const char *str);
