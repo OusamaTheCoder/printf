@@ -8,15 +8,17 @@
  */
 int pr_reversed_string(va_list str)
 {
-	int i = 0;
+	int i = 0, j, len = 0;
 	char *s = va_arg(str, char *);
-	
-	while(s[i] != '\0')
+
+	while (s[i] != '\0')
 		i++;
-	int len = i;
-	
-	for (i = len - 1; i >= 0; i--)
-		_putchar(s[i]);
+
+	for (j = i - 1; j >= 0; j--)
+	{
+		_putchar(s[j]);
+		len++;
+	}
 	
 	return (len);
-}_
+}
