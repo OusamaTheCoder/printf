@@ -1,82 +1,84 @@
+#include <stdarg.h>
+#include <unistd.h>
 #include "main.h"
 
-void print_buffer(char buffer[], int *buff_ind);
+/**
+ * write_char - Write a character to the standard output.
+ * @c: The character to write.
+ * @count: A pointer to the character count.
+ */
+void write_char(char c, int *count)
+{
+        write(1, &c, 1);
+        (*count)++;
+}
 
+/**
+ * write_string - Write a string to the standard output.
+ * @str: The string to write.
+ * @count: A pointer to the character count.
+ */
+void write_string(char *str, int *count)
+{
+        if (str == NULL)
+                str = "(null)";
+        while (*str)
+        {
+                write_char(*str, count);
+                str++;
+        }
+}
+
+/**
+ * _printf - Custom printf function
+ * @format: Format string
+ * @...: Additional arguments
+ *
+ * Return: The number of characters printed.
+ */
 int _printf(const char *format, ...)
 {
-    int i, printed_chars = 0;
-    int buff_ind = 0;
-    va_list list;
-    char buffer[BUFF_SIZE];
+        int count = 0;
+        va_list args;
 
-    if (format == NULL)
-        return (-1);
+        va_start(args, format);
 
-    va_start(list, format);
-
-    for (i = 0; format && format[i] != '\0'; i++)
-    {
-        if (format[i] != '%')
+        while (format && *format)
         {
-            buffer[buff_ind++] = format[i];
-            if (buff_ind == BUFF_SIZE)
-                print_buffer(buffer, &buff_ind);
-            printed_chars++;
-        }
-        else
-        {
-            print_buffer(buffer, &buff_ind);
-            i++;
-            if (format[i] == 'c')
-            {
-                char c = va_arg(list, int);
-                write(1, &c, 1);
-                printed_chars++;
-            }
-            else if (format[i] == 's')
-            {
-                char *str = va_arg(list, char *);
-                if (str == NULL)
+                if (*format == '%')
                 {
-                    write(1, "(null)", 6);
-                    printed_chars += 6;
+                        format++;
+                        if (*format == '\0')
+                                break;
+                        if (*format == 'c')
+                        {
+                                char c = va_arg(args, int);
+
+                                write_char(c, &count);
+                        }
+                        else if (*format == 's')
+                        {
+                                char *str = va_arg(args, char *);
+
+                                write_string(str, &count);
+                        }
+                        else if (*format == '%')
+                        {
+                                write_char('%', &count);
+                        }
+                        else
+                        {
+                                write_char('%', &count);
+                                write_char(*format, &count);
+                        }
                 }
                 else
                 {
-                    write(1, str, _strlen(str));
-                    printed_chars += _strlen(str);
+                        write_char(*format, &count);
                 }
-            }
-            else if (format[i] == '%')
-            {
-                write(1, &format[i], 1);
-                printed_chars++;
-            }
+                format++;
         }
-    }
-
-    print_buffer(buffer, &buff_ind);
-
-    va_end(list);
-
-    return (printed_chars);
-}
-
-int _strlen(const char *str)
-{
-    int len = 0;
-    while (str[len] != '\0')
-    {
-        len++;
-    }
-    return len;
-}
-
-void print_buffer(char buffer[], int *buff_ind)
-{
-    if (*buff_ind > 0)
-        write(1, buffer, *buff_ind);
-
-    *buff_ind = 0;
+        va_end(args);
+        return (count);
 }
 
