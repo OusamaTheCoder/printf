@@ -2,6 +2,13 @@
 
 void print_buffer(char buffer[], int *buff_ind);
 
+/**
+ * _printf - Custom printf function
+ * @format: Format string
+ * @...: Additional arguments
+ *
+ * Return: The number of characters printed.
+ */
 int _printf(const char *format, ...)
 {
     va_list args;
