@@ -9,8 +9,8 @@
  */
 void write_char(char c, int *count)
 {
-	write(1, &c, 1);
-	(*count)++;
+        write(1, &c, 1);
+        (*count)++;
 }
 
 /**
@@ -20,13 +20,13 @@ void write_char(char c, int *count)
  */
 void write_string(char *str, int *count)
 {
-	if (str == NULL)
-		str = "(null)";
-	while (*str)
-	{
-		write_char(*str, count);
-		str++;
-	}
+        if (str == NULL)
+                str = "(null)";
+        while (*str)
+        {
+                write_char(*str, count);
+                str++;
+        }
 }
 
 /**
@@ -38,47 +38,47 @@ void write_string(char *str, int *count)
  */
 int _printf(const char *format, ...)
 {
-	int count = 0;
-	va_list args;
+        int count = 0;
+        va_list args;
 
-	va_start(args, format);
+        va_start(args, format);
 
-	while (format && *format)
-	{
-		if (*format == '%')
-		{
-			format++;
-			if (*format == '\0')
-				break;
-			if (*format == 'c')
-			{
-				char c = va_arg(args, int);
+        while (format && *format)
+        {
+                if (*format == '%')
+                {
+                        format++;
+                        if (*format == '\0')
+                                break;
+                        if (*format == 'c')
+                        {
+                                char c = va_arg(args, int);
 
-				write_char(c, &count);
-			}
-			else if (*format == 's')
-			{
-				char *str = va_arg(args, char *);
+                                write_char(c, &count);
+                        }
+                        else if (*format == 's')
+                        {
+                                char *str = va_arg(args, char *);
 
-				write_string(str, &count);
-			}
-			else if (*format == '%')
-			{
-				write_char('%', &count);
-			}
-			else
-			{
-				write_char('%', &count);
-				write_char(*format, &count);
-			}
-		}
-		else
-		{
-			write_char(*format, &count);
-		}
-		format++;
-	}
-	va_end(args);
-	return (count);
+                                write_string(str, &count);
+                        }
+                        else if (*format == '%')
+                        {
+                                write_char('%', &count);
+                        }
+                        else
+                        {
+                                write_char('%', &count);
+                                write_char(*format, &count);
+                        }
+                }
+                else
+                {
+                        write_char(*format, &count);
+                }
+                format++;
+        }
+        va_end(args);
+        return (count);
 }
 

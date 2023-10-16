@@ -1,11 +1,13 @@
 #ifndef _MAIN_H
 #define _MAIN_H
 
+#define BUFF_SIZE 1024
+
 #include <stdarg.h>
 #include <unistd.h>
 
 int _putchar(char c);
-
+int _strlen(const char *str);
 
 int _printf(const char *format, ...);
 
