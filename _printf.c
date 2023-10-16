@@ -1,84 +1,64 @@
-#include <stdarg.h>
-#include <unistd.h>
 #include "main.h"
 
-/**
- * write_char - Write a character to the standard output.
- * @c: The character to write.
- * @count: A pointer to the character count.
- */
-void write_char(char c, int *count)
-{
-        write(1, &c, 1);
-        (*count)++;
-}
+void print_buffer(char buffer[], int *buff_ind);
 
-/**
- * write_string - Write a string to the standard output.
- * @str: The string to write.
- * @count: A pointer to the character count.
- */
-void write_string(char *str, int *count)
-{
-        if (str == NULL)
-                str = "(null)";
-        while (*str)
-        {
-                write_char(*str, count);
-                str++;
-        }
-}
-
-/**
- * _printf - Custom printf function
- * @format: Format string
- * @...: Additional arguments
- *
- * Return: The number of characters printed.
- */
 int _printf(const char *format, ...)
 {
-        int count = 0;
-        va_list args;
+    va_list args;
+    int buff_ind = 0, i;
+    char buffer[BUFF_SIZE];
 
-        va_start(args, format);
+    if (!format)
+        return (-1);
 
-        while (format && *format)
+    va_start(args, format);
+    for (i = 0; format[i]; i++)
+    {
+        if (format[i] != '%')
         {
-                if (*format == '%')
-                {
-                        format++;
-                        if (*format == '\0')
-                                break;
-                        if (*format == 'c')
-                        {
-                                char c = va_arg(args, int);
-
-                                write_char(c, &count);
-                        }
-                        else if (*format == 's')
-                        {
-                                char *str = va_arg(args, char *);
-
-                                write_string(str, &count);
-                        }
-                        else if (*format == '%')
-                        {
-                                write_char('%', &count);
-                        }
-                        else
-                        {
-                                write_char('%', &count);
-                                write_char(*format, &count);
-                        }
-                }
-                else
-                {
-                        write_char(*format, &count);
-                }
-                format++;
+            buffer[buff_ind++] = format[i];
         }
-        va_end(args);
-        return (count);
+        else
+        {
+            switch (format[++i])
+            {
+                case 'c':
+                    buffer[buff_ind++] = (char) va_arg(args, int);
+                    break;
+                case 's':
+                {
+                    char *str = va_arg(args, char*);
+                    int j;
+                    for (j = 0; str && str[j]; j++)
+                    {
+                        buffer[buff_ind++] = str[j];
+                        if (buff_ind == BUFF_SIZE)
+                            print_buffer(buffer, &buff_ind);
+                    }
+                    break;
+                }
+                case '%':
+                    buffer[buff_ind++] = '%';
+                    break;
+                default:
+                    i--;
+                    buffer[buff_ind++] = format[i];
+                    break;
+            }
+        }
+        if (buff_ind == BUFF_SIZE)
+            print_buffer(buffer, &buff_ind);
+    }
+    print_buffer(buffer, &buff_ind);
+    va_end(args);
+
+    return (buff_ind);
+}
+
+void print_buffer(char buffer[], int *buff_ind)
+{
+    if (*buff_ind > 0)
+        write(1, buffer, *buff_ind);
+    *buff_ind = 0;
 }
 
