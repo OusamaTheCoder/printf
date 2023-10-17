@@ -2,6 +2,12 @@
 #include <stdarg.h>
 #include <unistd.h>
 
+/**
+ * _printf - Custom printf function
+ * @format: The format string
+ *
+ * Return: The number of characters printed (excluding the null byte).
+ */
 int _printf(const char *format, ...)
 {
 	va_list args;
