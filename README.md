@@ -1,6 +1,6 @@
-# printf:tada:
+# 0x11. C - printf
 
-## Description:page_facing_up:
+## Description:
 
 [![printf.jpg](https://i.ibb.co/Kz8mLRm/printf.png)](https://ibb.co/yBxVYGV)
 
