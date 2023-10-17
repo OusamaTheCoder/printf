@@ -2,4 +2,5 @@ printf
 my_printf
 *.swp
 _putchar.c
-
+printf
+conf.h
