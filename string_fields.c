@@ -1,7 +1,5 @@
 #include "main.h"
 
-#include "main.h"
-
 /**
  * get_precision - Extracts the precision value from
  * the provided format string.
@@ -19,15 +17,6 @@
  *
  * Return: Updated pointer position after parsing the precision.
  */
-char *get_precision(char *p, params_t *params, va_list ap)
-{
-	int d = 0;
-
-	if (*p != '.')
-		return (p);
-	p++;
-	if
-
 char *get_precision(char *p, params_t *params, va_list ap)
 {
 	int d = 0;
