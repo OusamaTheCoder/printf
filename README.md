@@ -185,7 +185,7 @@ Handle the following custom conversion specifier:
 15. All the above options work well together.
 
 # Disclaimer
-If you happen to use this repo, we scored `??%`
+If you happen to use this repo, we scored `184.29%`
 ### Authors &copy;
 
 - @fatimaelasri01
